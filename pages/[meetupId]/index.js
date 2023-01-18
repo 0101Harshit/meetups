@@ -3,7 +3,6 @@ import React from "react";
 import MeetupDetail from "../../components/meetups/MeetupDetail";
 
 export default function MeetupDetails(props) {
-  console.log(props);
   return (
     <MeetupDetail
     image={props.meetupData.image}
@@ -22,7 +21,7 @@ export async function getStaticPaths() {
   const meetups = await meetupsCollection.find({}, { _id: 1 }).toArray();
   client.close();
   return {
-    fallback: false,
+    fallback: 'blocking',
     paths: meetups.map((meetup) => ({
       params: {
         meetupId: meetup._id.toString(),
@@ -42,7 +41,7 @@ export async function getStaticProps(context) {
   const selectedMeetup = await meetupsCollection.findOne({
     _id: ObjectId(meetupId),
   });
-  console.log(selectedMeetup);
+
   return {
     props: {
       meetupData: 
